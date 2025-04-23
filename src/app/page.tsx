@@ -6,15 +6,50 @@ import ColorPaletteModal from "@/components/color-palette-modal";
 import { Palette } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
+type MoodType = "vibrant" | "romantic" | "sunny" | "mystical" | "serene";
+
+interface MoodContent {
+  title: string;
+  subtitle: string;
+}
+
+const moodContent: Record<MoodType, MoodContent> = {
+  vibrant: {
+    title: "Spark Your Situationship",
+    subtitle:
+      "Let's analyze your dynamic connection with bold insights and confident perspectives!",
+  },
+  romantic: {
+    title: "Love Story Analyzer",
+    subtitle:
+      "Uncover the romantic potential and heartfelt possibilities in your connection.",
+  },
+  sunny: {
+    title: "Bright Relationship Insights",
+    subtitle:
+      "Get a positive perspective on your situation with uplifting and optimistic analysis.",
+  },
+  mystical: {
+    title: "Relationship Oracle",
+    subtitle:
+      "Dive deep into the mysteries of your connection with thoughtful and intuitive insights.",
+  },
+  serene: {
+    title: "Peaceful Connection Guide",
+    subtitle:
+      "Find clarity and balance in your relationship situation with calm, centered analysis.",
+  },
+};
+
 export default function Home() {
   const [showPaletteModal, setShowPaletteModal] = useState(false);
-  const [currentPalette, setCurrentPalette] = useState("romantic");
+  const [currentPalette, setCurrentPalette] = useState<MoodType>("romantic");
 
   useEffect(() => {
     // Check if user has already selected a palette
     const savedPalette = localStorage.getItem("selectedPalette");
     if (savedPalette) {
-      setCurrentPalette(savedPalette);
+      setCurrentPalette(savedPalette as MoodType);
       document.documentElement.setAttribute("data-theme", savedPalette);
     } else {
       setShowPaletteModal(true);
@@ -22,7 +57,7 @@ export default function Home() {
   }, []);
 
   const handlePaletteChange = (palette: string) => {
-    setCurrentPalette(palette);
+    setCurrentPalette(palette as MoodType);
     document.documentElement.setAttribute("data-theme", palette);
     localStorage.setItem("selectedPalette", palette);
   };
@@ -45,11 +80,10 @@ export default function Home() {
 
           <div className="text-center space-y-4">
             <h1 className="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent">
-              Situationship Analyzer
+              {moodContent[currentPalette].title}
             </h1>
             <p className="text-lg text-muted-foreground">
-              Get insights about your relationship situation, tailored to your
-              current mood
+              {moodContent[currentPalette].subtitle}
             </p>
           </div>
 
