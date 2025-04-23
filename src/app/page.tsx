@@ -2,72 +2,68 @@
 
 import { useState, useEffect } from "react";
 import SituationshipForm from "@/components/situationship-form";
-import { Sparkles, Zap } from "lucide-react";
-import { Switch } from "@/components/ui/switch";
-import { Label } from "@/components/ui/label";
+import ColorPaletteModal from "@/components/color-palette-modal";
+import { Palette } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 export default function Home() {
-  const [isGirlMode, setIsGirlMode] = useState(true);
+  const [showPaletteModal, setShowPaletteModal] = useState(false);
+  const [currentPalette, setCurrentPalette] = useState("romantic");
 
   useEffect(() => {
-    // Apply theme based on gender mode
-    document.documentElement.setAttribute(
-      "data-theme",
-      isGirlMode ? "girl" : "boy"
-    );
-  }, [isGirlMode]);
+    // Check if user has already selected a palette
+    const savedPalette = localStorage.getItem("selectedPalette");
+    if (savedPalette) {
+      setCurrentPalette(savedPalette);
+      document.documentElement.setAttribute("data-theme", savedPalette);
+    } else {
+      setShowPaletteModal(true);
+    }
+  }, []);
+
+  const handlePaletteChange = (palette: string) => {
+    setCurrentPalette(palette);
+    document.documentElement.setAttribute("data-theme", palette);
+    localStorage.setItem("selectedPalette", palette);
+  };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-background to-accent/5">
+    <div className="min-h-screen bg-gradient-to-b from-[var(--gradient-start)] to-[var(--gradient-end)]">
       <div className="container mx-auto px-4 py-12">
-        <div className="max-w-3xl mx-auto">
-          <div className="flex items-center justify-end gap-2 mb-4">
-            <Label
-              htmlFor="gender-mode"
-              className="text-sm text-muted-foreground"
+        <div className="max-w-3xl mx-auto space-y-8">
+          <div className="flex items-center justify-end">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setShowPaletteModal(true)}
+              className="flex items-center gap-2"
             >
-              {isGirlMode ? "Girl Mode" : "Boy Mode"}
-            </Label>
-            <Switch
-              id="gender-mode"
-              checked={isGirlMode}
-              onCheckedChange={setIsGirlMode}
-              className="data-[state=checked]:bg-primary"
-            />
+              <Palette className="w-4 h-4" />
+              Change Mood
+            </Button>
           </div>
 
-          <div className="text-center mb-12">
-            <div className="inline-flex items-center gap-2 mb-4">
-              {isGirlMode ? (
-                <Sparkles className="w-6 h-6 text-primary" />
-              ) : (
-                <Zap className="w-6 h-6 text-primary" />
-              )}
-              <h1 className="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent">
-                Situationship Analyzer
-              </h1>
-              {isGirlMode ? (
-                <Sparkles className="w-6 h-6 text-primary" />
-              ) : (
-                <Zap className="w-6 h-6 text-primary" />
-              )}
-            </div>
-            <p className="text-lg text-muted-foreground mb-4">
-              {isGirlMode
-                ? "Spill the tea on your situationship and get the real talk you deserve"
-                : "Break down your situationship and get the real talk you deserve"}
-            </p>
-            <p className="text-sm text-muted-foreground/80">
-              {isGirlMode
-                ? "No judgment, just honest insights to help you navigate your ✨situationship✨"
-                : "No judgment, just honest insights to help you navigate your 🎯situationship"}
+          <div className="text-center space-y-4">
+            <h1 className="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent">
+              Situationship Analyzer
+            </h1>
+            <p className="text-lg text-muted-foreground">
+              Get insights about your relationship situation, tailored to your
+              current mood
             </p>
           </div>
+
           <div className="bg-card/50 backdrop-blur-sm rounded-2xl p-8 shadow-lg border border-border/50">
-            <SituationshipForm isGirlMode={isGirlMode} />
+            <SituationshipForm />
           </div>
         </div>
       </div>
+
+      <ColorPaletteModal
+        open={showPaletteModal}
+        onOpenChange={setShowPaletteModal}
+        onSelect={handlePaletteChange}
+      />
     </div>
   );
 }
