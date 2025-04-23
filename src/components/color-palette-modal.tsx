@@ -1,14 +1,29 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { Button } from "@/components/ui/button";
-import { Palette, Sparkles, Zap, Heart, Sun, Moon, Cloud } from "lucide-react";
+import {
+  Palette,
+  Sparkles,
+  Zap,
+  Heart,
+  Sun,
+  Moon,
+  Cloud,
+  Info,
+} from "lucide-react";
 
 interface ColorPaletteModalProps {
   open: boolean;
@@ -88,25 +103,37 @@ export default function ColorPaletteModal({
             Choose Your Mood Palette
           </DialogTitle>
         </DialogHeader>
-        <div className="grid gap-4 py-4">
-          {palettes.map((palette) => (
-            <Button
-              key={palette.id}
-              variant="outline"
-              className="flex items-center gap-4 p-4 h-auto"
-              onClick={() => onSelect(palette.id)}
-            >
-              <div className="flex items-center justify-center w-10 h-10 rounded-full bg-primary/10">
-                <palette.icon className="w-5 h-5 text-primary" />
+        <div className="grid gap-3 py-4">
+          <TooltipProvider>
+            {palettes.map((palette) => (
+              <div key={palette.id} className="flex gap-2 items-center">
+                <Button
+                  variant="outline"
+                  className="flex-1 flex items-center gap-3 p-3 h-auto"
+                  onClick={() => onSelect(palette.id)}
+                >
+                  <div className="flex items-center justify-center w-8 h-8 rounded-full bg-primary/10">
+                    <palette.icon className="w-4 h-4 text-primary" />
+                  </div>
+                  <span className="font-medium">{palette.name}</span>
+                </Button>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="h-10 w-10 text-muted-foreground hover:text-foreground"
+                    >
+                      <Info className="h-4 w-4" />
+                    </Button>
+                  </TooltipTrigger>
+                  <TooltipContent side="right" className="max-w-[200px]">
+                    <p>{palette.description}</p>
+                  </TooltipContent>
+                </Tooltip>
               </div>
-              <div className="flex-1 text-left">
-                <div className="font-medium">{palette.name}</div>
-                <div className="text-sm text-muted-foreground">
-                  {palette.description}
-                </div>
-              </div>
-            </Button>
-          ))}
+            ))}
+          </TooltipProvider>
         </div>
       </DialogContent>
     </Dialog>
