@@ -79,6 +79,10 @@
 }
 
 :root[data-theme="boy"] {
+  --background: oklch(0.98 0.02 250); /* Light blue tint */
+  --foreground: oklch(0.2 0.02 250);
+  --card: oklch(1 0 250);
+  --card-foreground: oklch(0.2 0.02 250);
   --primary: oklch(0.6 0.2 250); /* Vibrant blue */
   --accent: oklch(0.6 0.15 200); /* Teal */
   --ring: oklch(0.6 0.2 250);
@@ -127,6 +131,10 @@
 }
 
 .dark[data-theme="boy"] {
+  --background: oklch(0.15 0.02 250); /* Dark blue tint */
+  --foreground: oklch(0.98 0.02 250);
+  --card: oklch(0.2 0.02 250);
+  --card-foreground: oklch(0.98 0.02 250);
   --primary: oklch(0.6 0.2 250);
   --accent: oklch(0.6 0.15 200);
   --ring: oklch(0.6 0.2 250);
