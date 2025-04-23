@@ -3,8 +3,17 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
-import { ArrowRight, Heart, Sparkles, Zap, Moon, Cloud } from "lucide-react";
+import {
+  ArrowRight,
+  Heart,
+  Sparkles,
+  Zap,
+  Moon,
+  Cloud,
+  Palette,
+} from "lucide-react";
 import Link from "next/link";
+import ColorPaletteModal from "@/components/color-palette-modal";
 
 type MoodType = "vibrant" | "romantic" | "sunny" | "mystical" | "serene";
 
@@ -61,6 +70,7 @@ const testimonials = [
 export default function Home() {
   const router = useRouter();
   const [currentMood, setCurrentMood] = useState<MoodType>("romantic");
+  const [showPaletteModal, setShowPaletteModal] = useState(false);
 
   useEffect(() => {
     const savedMood = localStorage.getItem("selectedPalette");
@@ -69,17 +79,38 @@ export default function Home() {
     }
   }, []);
 
+  const handlePaletteChange = (palette: string) => {
+    setCurrentMood(palette as MoodType);
+    document.documentElement.setAttribute("data-theme", palette);
+    localStorage.setItem("selectedPalette", palette);
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-[var(--gradient-start)] to-[var(--gradient-end)]">
       {/* Hero Section */}
       <div className="container mx-auto px-4 py-20">
         <div className="max-w-4xl mx-auto text-center space-y-8">
+          <div className="flex justify-center">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setShowPaletteModal(true)}
+              className="flex items-center gap-2"
+            >
+              <Palette className="w-4 h-4" />
+              Set Your Mood
+            </Button>
+          </div>
           <h1 className="text-5xl md:text-6xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent">
             Understand Your Situationship
           </h1>
           <p className="text-xl md:text-2xl text-muted-foreground">
             Get personalized insights about your relationship situation,
             tailored to your current mood and emotional state.
+          </p>
+          <p className="text-lg text-muted-foreground">
+            Choose your mood above to customize your experience and get insights
+            that match how you're feeling right now.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button
@@ -154,16 +185,33 @@ export default function Home() {
             Join thousands of others who've found clarity in their
             relationships.
           </p>
-          <Button
-            size="lg"
-            onClick={() => router.push("/search")}
-            className="group"
-          >
-            Start Your Analysis Now
-            <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
-          </Button>
+          <div className="flex flex-col items-center gap-4">
+            <Button
+              size="lg"
+              onClick={() => router.push("/search")}
+              className="group"
+            >
+              Start Your Analysis Now
+              <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+            </Button>
+            <Button
+              variant="outline"
+              size="lg"
+              onClick={() => setShowPaletteModal(true)}
+              className="flex items-center gap-2"
+            >
+              <Palette className="w-4 h-4" />
+              Change Your Mood First
+            </Button>
+          </div>
         </div>
       </div>
+
+      <ColorPaletteModal
+        open={showPaletteModal}
+        onOpenChange={setShowPaletteModal}
+        onSelect={handlePaletteChange}
+      />
     </div>
   );
 }
