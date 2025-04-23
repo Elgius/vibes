@@ -1,103 +1,169 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import SituationshipForm from "@/components/situationship-form";
-import ColorPaletteModal from "@/components/color-palette-modal";
-import { Palette } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useRouter } from "next/navigation";
+import { ArrowRight, Heart, Sparkles, Zap, Moon, Cloud } from "lucide-react";
+import Link from "next/link";
 
 type MoodType = "vibrant" | "romantic" | "sunny" | "mystical" | "serene";
 
-interface MoodContent {
-  title: string;
-  subtitle: string;
-}
+const features = [
+  {
+    icon: Heart,
+    title: "Mood-Based Analysis",
+    description:
+      "Get insights that match your current emotional state, whether you're feeling hopeful, confused, or ready for clarity.",
+  },
+  {
+    icon: Sparkles,
+    title: "Personalized Guidance",
+    description:
+      "Receive tailored advice that understands the unique dynamics of modern relationships.",
+  },
+  {
+    icon: Zap,
+    title: "Instant Insights",
+    description:
+      "No waiting around - get immediate, thoughtful analysis of your situation.",
+  },
+  {
+    icon: Moon,
+    title: "Private & Secure",
+    description: "Your thoughts and feelings are kept completely confidential.",
+  },
+  {
+    icon: Cloud,
+    title: "Emotionally Intelligent",
+    description:
+      "Our analysis considers the full spectrum of human emotions and relationship dynamics.",
+  },
+];
 
-const moodContent: Record<MoodType, MoodContent> = {
-  vibrant: {
-    title: "Spark Your Situationship",
-    subtitle:
-      "Let's analyze your dynamic connection with bold insights and confident perspectives!",
+const testimonials = [
+  {
+    quote:
+      "Finally, someone who gets it! The analysis was spot-on and helped me see things clearly.",
+    author: "Alex, 24",
   },
-  romantic: {
-    title: "Love Story Analyzer",
-    subtitle:
-      "Uncover the romantic potential and heartfelt possibilities in your connection.",
+  {
+    quote:
+      "The mood-based approach made me feel understood. It's like having a friend who really gets modern dating.",
+    author: "Jordan, 22",
   },
-  sunny: {
-    title: "Bright Relationship Insights",
-    subtitle:
-      "Get a positive perspective on your situation with uplifting and optimistic analysis.",
+  {
+    quote:
+      "I was so confused about my situationship, but this helped me understand what I really want.",
+    author: "Taylor, 27",
   },
-  mystical: {
-    title: "Relationship Oracle",
-    subtitle:
-      "Dive deep into the mysteries of your connection with thoughtful and intuitive insights.",
-  },
-  serene: {
-    title: "Peaceful Connection Guide",
-    subtitle:
-      "Find clarity and balance in your relationship situation with calm, centered analysis.",
-  },
-};
+];
 
 export default function Home() {
-  const [showPaletteModal, setShowPaletteModal] = useState(false);
-  const [currentPalette, setCurrentPalette] = useState<MoodType>("romantic");
+  const router = useRouter();
+  const [currentMood, setCurrentMood] = useState<MoodType>("romantic");
 
   useEffect(() => {
-    // Check if user has already selected a palette
-    const savedPalette = localStorage.getItem("selectedPalette");
-    if (savedPalette) {
-      setCurrentPalette(savedPalette as MoodType);
-      document.documentElement.setAttribute("data-theme", savedPalette);
-    } else {
-      setShowPaletteModal(true);
+    const savedMood = localStorage.getItem("selectedPalette");
+    if (savedMood) {
+      setCurrentMood(savedMood as MoodType);
     }
   }, []);
 
-  const handlePaletteChange = (palette: string) => {
-    setCurrentPalette(palette as MoodType);
-    document.documentElement.setAttribute("data-theme", palette);
-    localStorage.setItem("selectedPalette", palette);
-  };
-
   return (
     <div className="min-h-screen bg-gradient-to-b from-[var(--gradient-start)] to-[var(--gradient-end)]">
-      <div className="container mx-auto px-4 py-12">
-        <div className="max-w-3xl mx-auto space-y-8">
-          <div className="flex items-center justify-end">
+      {/* Hero Section */}
+      <div className="container mx-auto px-4 py-20">
+        <div className="max-w-4xl mx-auto text-center space-y-8">
+          <h1 className="text-5xl md:text-6xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent">
+            Understand Your Situationship
+          </h1>
+          <p className="text-xl md:text-2xl text-muted-foreground">
+            Get personalized insights about your relationship situation,
+            tailored to your current mood and emotional state.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Button
+              size="lg"
+              onClick={() => router.push("/search")}
+              className="group"
+            >
+              Start Your Analysis
+              <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+            </Button>
             <Button
               variant="outline"
-              size="sm"
-              onClick={() => setShowPaletteModal(true)}
-              className="flex items-center gap-2"
+              size="lg"
+              onClick={() => router.push("/search")}
             >
-              <Palette className="w-4 h-4" />
-              Change Mood
+              How It Works
             </Button>
-          </div>
-
-          <div className="text-center space-y-4">
-            <h1 className="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent">
-              {moodContent[currentPalette].title}
-            </h1>
-            <p className="text-lg text-muted-foreground">
-              {moodContent[currentPalette].subtitle}
-            </p>
-          </div>
-
-          <div className="bg-card/50 backdrop-blur-sm rounded-2xl p-8 shadow-lg border border-border/50">
-            <SituationshipForm />
           </div>
         </div>
       </div>
 
-      <ColorPaletteModal
-        open={showPaletteModal}
-        onOpenChange={setShowPaletteModal}
-        onSelect={handlePaletteChange}
-      />
+      {/* Features Section */}
+      <div className="bg-card/50 backdrop-blur-sm py-20">
+        <div className="container mx-auto px-4">
+          <h2 className="text-3xl font-bold text-center mb-12">
+            Why Choose Us
+          </h2>
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {features.map((feature, index) => (
+              <div
+                key={index}
+                className="bg-background/50 p-6 rounded-xl border border-border/50 space-y-4"
+              >
+                <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
+                  <feature.icon className="w-6 h-6 text-primary" />
+                </div>
+                <h3 className="text-xl font-semibold">{feature.title}</h3>
+                <p className="text-muted-foreground">{feature.description}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Testimonials Section */}
+      <div className="container mx-auto px-4 py-20">
+        <h2 className="text-3xl font-bold text-center mb-12">
+          What People Are Saying
+        </h2>
+        <div className="grid md:grid-cols-3 gap-8">
+          {testimonials.map((testimonial, index) => (
+            <div
+              key={index}
+              className="bg-card/50 backdrop-blur-sm p-6 rounded-xl border border-border/50"
+            >
+              <p className="text-lg mb-4">"{testimonial.quote}"</p>
+              <p className="text-sm text-muted-foreground">
+                — {testimonial.author}
+              </p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* CTA Section */}
+      <div className="bg-card/50 backdrop-blur-sm py-20">
+        <div className="container mx-auto px-4 text-center">
+          <h2 className="text-3xl font-bold mb-6">
+            Ready to Understand Your Situation?
+          </h2>
+          <p className="text-xl text-muted-foreground mb-8">
+            Join thousands of others who've found clarity in their
+            relationships.
+          </p>
+          <Button
+            size="lg"
+            onClick={() => router.push("/search")}
+            className="group"
+          >
+            Start Your Analysis Now
+            <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+          </Button>
+        </div>
+      </div>
     </div>
   );
 }
