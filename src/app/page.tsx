@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import SituationshipForm from "@/components/situationship-form";
 import { Sparkles, Zap } from "lucide-react";
 import { Switch } from "@/components/ui/switch";
@@ -8,6 +8,14 @@ import { Label } from "@/components/ui/label";
 
 export default function Home() {
   const [isGirlMode, setIsGirlMode] = useState(true);
+
+  useEffect(() => {
+    // Apply theme based on gender mode
+    document.documentElement.setAttribute(
+      "data-theme",
+      isGirlMode ? "girl" : "boy"
+    );
+  }, [isGirlMode]);
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-background to-accent/5">

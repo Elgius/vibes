@@ -78,6 +78,20 @@
   --sidebar-ring: oklch(0.6 0.2 350);
 }
 
+:root[data-theme="boy"] {
+  --primary: oklch(0.6 0.2 250); /* Vibrant blue */
+  --accent: oklch(0.6 0.15 200); /* Teal */
+  --ring: oklch(0.6 0.2 250);
+  --chart-1: oklch(0.6 0.2 250); /* Blue */
+  --chart-2: oklch(0.6 0.15 200); /* Teal */
+  --chart-3: oklch(0.6 0.2 150); /* Mint */
+  --chart-4: oklch(0.6 0.2 100); /* Green */
+  --chart-5: oklch(0.6 0.2 50); /* Yellow */
+  --sidebar-primary: oklch(0.6 0.2 250);
+  --sidebar-accent: oklch(0.6 0.15 200);
+  --sidebar-ring: oklch(0.6 0.2 250);
+}
+
 .dark {
   --background: oklch(0.2 0.02 0);
   --foreground: oklch(0.98 0.02 0);
@@ -110,6 +124,20 @@
   --sidebar-accent-foreground: oklch(0.98 0.02 0);
   --sidebar-border: oklch(0.3 0.02 0);
   --sidebar-ring: oklch(0.6 0.2 350);
+}
+
+.dark[data-theme="boy"] {
+  --primary: oklch(0.6 0.2 250);
+  --accent: oklch(0.6 0.15 200);
+  --ring: oklch(0.6 0.2 250);
+  --chart-1: oklch(0.6 0.2 250);
+  --chart-2: oklch(0.6 0.15 200);
+  --chart-3: oklch(0.6 0.2 150);
+  --chart-4: oklch(0.6 0.2 100);
+  --chart-5: oklch(0.6 0.2 50);
+  --sidebar-primary: oklch(0.6 0.2 250);
+  --sidebar-accent: oklch(0.6 0.15 200);
+  --sidebar-ring: oklch(0.6 0.2 250);
 }
 
 @layer base {

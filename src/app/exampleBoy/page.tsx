@@ -1,9 +1,17 @@
+"use client";
+
+import { useEffect } from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import AnalysisCard from "@/components/analysiscard";
 import { ArrowLeft, Zap, Trophy, Target } from "lucide-react";
 
 export default function ExamplePage() {
+  useEffect(() => {
+    // Ensure boy theme is applied
+    document.documentElement.setAttribute("data-theme", "boy");
+  }, []);
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-background to-accent/5">
       <div className="container mx-auto px-4 py-12">
