@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -14,21 +13,12 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { Button } from "@/components/ui/button";
-import {
-  Palette,
-  Sparkles,
-  Zap,
-  Heart,
-  Sun,
-  Moon,
-  Cloud,
-  Info,
-} from "lucide-react";
+import { Palette, Zap, Heart, Sun, Moon, Cloud, Info } from "lucide-react";
+import { useColorPalette } from "@/context/color-palette-context";
 
 interface ColorPaletteModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  onSelect: (palette: string) => void;
 }
 
 const palettes = [
@@ -92,8 +82,9 @@ const palettes = [
 export default function ColorPaletteModal({
   open,
   onOpenChange,
-  onSelect,
 }: ColorPaletteModalProps) {
+  const { setCurrentPalette } = useColorPalette();
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[425px]">
@@ -110,7 +101,10 @@ export default function ColorPaletteModal({
                 <Button
                   variant="outline"
                   className="flex-1 flex items-center gap-3 p-3 h-auto"
-                  onClick={() => onSelect(palette.id)}
+                  onClick={() => {
+                    setCurrentPalette(palette.id as any);
+                    onOpenChange(false);
+                  }}
                 >
                   <div className="flex items-center justify-center w-8 h-8 rounded-full bg-primary/10">
                     <palette.icon className="w-4 h-4 text-primary" />

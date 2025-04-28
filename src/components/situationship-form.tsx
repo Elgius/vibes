@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { useRouter } from "next/navigation";
-
+import { useColorPalette } from "@/context/color-palette-context";
 type MoodType = "vibrant" | "romantic" | "sunny" | "mystical" | "serene";
 
 const moodPlaceholders: Record<MoodType, string> = {
@@ -21,6 +21,7 @@ const moodPlaceholders: Record<MoodType, string> = {
 };
 
 export default function SituationshipForm() {
+  const { currentPalette } = useColorPalette();
   const [situation, setSituation] = useState("");
   const router = useRouter();
   const [currentMood, setCurrentMood] = useState<MoodType>("romantic");
@@ -36,14 +37,8 @@ export default function SituationshipForm() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    const getMood = localStorage.getItem("selectedPalette");
-    if (!getMood) {
-      return;
-    } else {
-      setCurrentMood(getMood as MoodType);
-    }
     const payloade1 = {
-      mood: currentMood,
+      mood: currentPalette,
       message: situation,
     };
 
