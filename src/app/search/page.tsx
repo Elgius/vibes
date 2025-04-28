@@ -48,6 +48,8 @@ const moodContent: Record<MoodType, MoodContent> = {
 export default function Search() {
   const [showPaletteModal, setShowPaletteModal] = useState(false);
   const [currentPalette, setCurrentPalette] = useState<MoodType>("romantic");
+  const [loading, setLoading] = useState(false);
+  const [text, setText] = useState("");
 
   useEffect(() => {
     // Check if user has already selected a palette

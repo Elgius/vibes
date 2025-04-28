@@ -35,7 +35,20 @@ export default function SituationshipForm() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Navigate to the result page
+
+    const getMood = localStorage.getItem("selectedPalette");
+    if (!getMood) {
+      return;
+    } else {
+      setCurrentMood(getMood as MoodType);
+    }
+    const payloade1 = {
+      mood: currentMood,
+      message: situation,
+    };
+
+    console.log(payloade1);
+
     router.push("/result");
   };
 
