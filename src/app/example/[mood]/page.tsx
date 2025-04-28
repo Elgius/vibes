@@ -8,27 +8,29 @@ import { ArrowLeft } from "lucide-react";
 import { useParams } from "next/navigation";
 
 const moodIcons = {
-  vibrant: "⚡",
-  romantic: "💕",
-  sunny: "☀️",
-  mystical: "🌙",
-  serene: "☁️",
+  vibrant: "💎",
+  romantic: "🌙",
+  sunny: "✨",
+  mystical: "🔮",
+  serene: "💧",
 };
 
 const moodTitles = {
-  vibrant: "Your Situationship Analysis",
-  romantic: "Your Love Story Analysis",
-  sunny: "Your Relationship Analysis",
-  mystical: "Your Connection Analysis",
-  serene: "Your Bond Analysis",
+  vibrant: "Rose Quartz Love Analysis",
+  romantic: "Moonstone Intuition Guide",
+  sunny: "Citrine Abundance Reading",
+  mystical: "Amethyst Wisdom Insight",
+  serene: "Aquamarine Clarity Reading",
 };
 
 const moodDescriptions = {
-  vibrant: "Here's the breakdown of your situation ⚡",
-  romantic: "Here's the story of your connection 💕",
-  sunny: "Here's the bright side of your situation ☀️",
-  mystical: "Here's the deeper meaning of your connection 🌙",
-  serene: "Here's the peaceful perspective on your situation ☁️",
+  vibrant:
+    "Channel the loving energy of rose quartz to understand your connection 💎",
+  romantic: "Let moonstone's gentle energy guide your emotional journey 🌙",
+  sunny:
+    "Harness citrine's bright energy for positive relationship insights ✨",
+  mystical: "Tap into amethyst's spiritual wisdom for deeper understanding 🔮",
+  serene: "Find peace and clarity through aquamarine's soothing energy 💧",
 };
 
 export default function ExamplePage() {

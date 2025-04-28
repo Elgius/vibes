@@ -19,29 +19,29 @@ interface MoodContent {
 
 const moodContent: Record<MoodType, MoodContent> = {
   vibrant: {
-    title: "Spark Your Situationship",
+    title: "Rose Quartz Love Guide",
     subtitle:
-      "Let's analyze your dynamic connection with bold insights and confident perspectives!",
+      "Channel the loving energy of rose quartz to manifest clarity and passion in your connection.",
   },
   romantic: {
-    title: "Love Story Analyzer",
+    title: "Moonstone Intuition",
     subtitle:
-      "Uncover the romantic potential and heartfelt possibilities in your connection.",
+      "Let moonstone's gentle energy guide you to deeper emotional understanding and connection.",
   },
   sunny: {
-    title: "Bright Relationship Insights",
+    title: "Citrine Abundance",
     subtitle:
-      "Get a positive perspective on your situation with uplifting and optimistic analysis.",
+      "Harness citrine's bright energy to attract positive relationship energy and manifest your desires.",
   },
   mystical: {
-    title: "Relationship Oracle",
+    title: "Amethyst Wisdom",
     subtitle:
-      "Dive deep into the mysteries of your connection with thoughtful and intuitive insights.",
+      "Tap into amethyst's spiritual energy for deeper insights into your relationship journey.",
   },
   serene: {
-    title: "Peaceful Connection Guide",
+    title: "Aquamarine Clarity",
     subtitle:
-      "Find clarity and balance in your relationship situation with calm, centered analysis.",
+      "Find peace and emotional balance through aquamarine's soothing energy and wisdom.",
   },
 };
 

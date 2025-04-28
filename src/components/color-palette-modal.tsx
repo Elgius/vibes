@@ -34,57 +34,57 @@ interface ColorPaletteModalProps {
 const palettes = [
   {
     id: "vibrant",
-    name: "Vibrant Energy",
+    name: "Rose Quartz Energy",
     description:
-      "Bold and dynamic, perfect for when you're feeling confident and ready to take on the world!",
+      "Like the vibrant energy of rose quartz, perfect for when you're feeling confident and ready to manifest love! This crystal-inspired theme brings warmth and passion to your analysis.",
     icon: Zap,
     colors: {
-      primary: "oklch(0.6 0.2 250)", // Vibrant blue
-      accent: "oklch(0.6 0.15 200)", // Teal
+      primary: "oklch(0.6 0.2 350)", // Rose quartz pink
+      accent: "oklch(0.6 0.15 300)", // Amethyst purple
     },
   },
   {
     id: "romantic",
-    name: "Romantic Vibes",
+    name: "Moonstone Magic",
     description:
-      "Soft and dreamy, ideal for when you're feeling sentimental and hopeful.",
+      "Channel the gentle energy of moonstone, ideal for when you're feeling sentimental and hopeful. This theme brings intuitive insights and emotional clarity to your analysis.",
     icon: Heart,
     colors: {
-      primary: "oklch(0.6 0.2 350)", // Pink
-      accent: "oklch(0.6 0.15 300)", // Purple
+      primary: "oklch(0.6 0.2 350)", // Moonstone blue
+      accent: "oklch(0.6 0.15 300)", // Opal iridescence
     },
   },
   {
     id: "sunny",
-    name: "Sunny Outlook",
+    name: "Citrine Sunshine",
     description:
-      "Bright and cheerful, great for when you're feeling optimistic and positive!",
+      "Embrace the bright energy of citrine, perfect for manifesting positivity and abundance in your relationships. This theme brings warmth and optimism to your analysis.",
     icon: Sun,
     colors: {
-      primary: "oklch(0.6 0.2 50)", // Yellow
-      accent: "oklch(0.6 0.15 100)", // Orange
+      primary: "oklch(0.6 0.2 50)", // Citrine yellow
+      accent: "oklch(0.6 0.15 100)", // Carnelian orange
     },
   },
   {
     id: "mystical",
-    name: "Mystical Mood",
+    name: "Amethyst Insight",
     description:
-      "Deep and mysterious, perfect for when you're feeling introspective and thoughtful.",
+      "Tap into the deep wisdom of amethyst, perfect for spiritual growth and intuitive understanding. This theme brings mystical depth to your relationship analysis.",
     icon: Moon,
     colors: {
-      primary: "oklch(0.6 0.2 300)", // Purple
-      accent: "oklch(0.6 0.15 250)", // Indigo
+      primary: "oklch(0.6 0.2 300)", // Amethyst purple
+      accent: "oklch(0.6 0.15 250)", // Lapis lazuli blue
     },
   },
   {
     id: "serene",
-    name: "Serene State",
+    name: "Aquamarine Calm",
     description:
-      "Calm and peaceful, ideal for when you're feeling balanced and centered.",
+      "Experience the soothing energy of aquamarine, perfect for finding clarity and emotional balance. This theme brings peaceful wisdom to your relationship analysis.",
     icon: Cloud,
     colors: {
-      primary: "oklch(0.6 0.2 200)", // Teal
-      accent: "oklch(0.6 0.15 150)", // Mint
+      primary: "oklch(0.6 0.2 200)", // Aquamarine blue
+      accent: "oklch(0.6 0.15 150)", // Amazonite green
     },
   },
 ];
