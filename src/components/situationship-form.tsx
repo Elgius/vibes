@@ -35,8 +35,8 @@ export default function SituationshipForm() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Navigate to the example page with the current mood
-    router.push(`/example/${currentMood}`);
+    // Navigate to the result page
+    router.push("/result");
   };
 
   return (
