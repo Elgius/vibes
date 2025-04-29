@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { useRouter } from "next/navigation";
-
+import { useColorPalette } from "@/context/color-palette-context";
 type MoodType = "vibrant" | "romantic" | "sunny" | "mystical" | "serene";
 
 const moodPlaceholders: Record<MoodType, string> = {
@@ -21,22 +21,53 @@ const moodPlaceholders: Record<MoodType, string> = {
 };
 
 export default function SituationshipForm() {
+  const { currentPalette } = useColorPalette();
   const [situation, setSituation] = useState("");
   const router = useRouter();
   const [currentMood, setCurrentMood] = useState<MoodType>("romantic");
 
   useEffect(() => {
     // Get the current mood from localStorage
-    const savedMood = localStorage.getItem("selectedPalette");
-    if (savedMood) {
-      setCurrentMood(savedMood as MoodType);
-    }
+    const savedMood = currentPalette;
+    setCurrentMood(savedMood as MoodType);
   }, []);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Navigate to the result page
-    router.push("/result");
+
+    const situationPayload: { mood: string; message: string } = {
+      mood: currentPalette,
+      message: situation,
+    };
+
+    try {
+      const response = await fetch("/api/analyze", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(situationPayload),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to analyze situation");
+      }
+
+      const data = await response.json();
+      console.log("Response:", data);
+
+      if (data.response === "no context") {
+        alert(
+          "please explain the relationship a bit more so we can give an answer!"
+        );
+      } else {
+        router.push("/result");
+      }
+    } catch (error) {
+      console.error("Error sending request:", error);
+      // You might want to show an error message to the user here
+      alert("an error occured, please try again or contact support");
+    }
   };
 
   return (
