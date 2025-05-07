@@ -1,0 +1,145 @@
+{
+  "countries": {
+    "america": {
+      "name": "United States",
+      "helplines": [
+        {
+          "name": "National Domestic Violence Hotline",
+          "phone": "1-800-799-7233",
+          "email": "thehotline@thehotline.org",
+          "description": "24/7 support for anyone experiencing domestic violence or abuse"
+        },
+        {
+          "name": "National Suicide Prevention Lifeline",
+          "phone": "988",
+          "description": "24/7 support for people in suicidal crisis or emotional distress"
+        },
+        {
+          "name": "Crisis Text Line",
+          "phone": "Text HOME to 741741",
+          "description": "24/7 text support for any type of crisis"
+        },
+        {
+          "name": "RAINN",
+          "phone": "1-800-656-4673",
+          "description": "24/7 support for survivors of sexual violence"
+        },
+        {
+          "name": "The Trevor Project",
+          "phone": "1-866-488-7386",
+          "description": "24/7 support for LGBTQ+ youth in crisis"
+        }
+      ]
+    },
+    "uk": {
+      "name": "United Kingdom",
+      "helplines": [
+        {
+          "name": "National Domestic Abuse Helpline",
+          "phone": "0808 2000 247",
+          "description": "24/7 support for anyone experiencing domestic abuse"
+        },
+        {
+          "name": "Samaritans",
+          "phone": "116 123",
+          "description": "24/7 emotional support for anyone in distress"
+        },
+        {
+          "name": "Rape Crisis",
+          "phone": "0808 802 9999",
+          "description": "Support for survivors of sexual violence"
+        },
+        {
+          "name": "Mind",
+          "phone": "0300 123 3393",
+          "description": "Mental health support and information"
+        }
+      ]
+    },
+    "singapore": {
+      "name": "Singapore",
+      "helplines": [
+        {
+          "name": "National Care Hotline",
+          "phone": "1800-202-6868",
+          "description": "Mental health support and counseling"
+        },
+        {
+          "name": "AWARE Helpline",
+          "phone": "1800-777-5555",
+          "description": "Support for women facing violence or discrimination"
+        },
+        {
+          "name": "Samaritans of Singapore",
+          "phone": "1-767",
+          "description": "24/7 emotional support and crisis intervention"
+        }
+      ]
+    },
+    "australia": {
+      "name": "Australia",
+      "helplines": [
+        {
+          "name": "Lifeline",
+          "phone": "13 11 14",
+          "description": "24/7 crisis support and suicide prevention"
+        },
+        {
+          "name": "1800RESPECT",
+          "phone": "1800 737 732",
+          "description": "24/7 support for sexual assault and domestic violence"
+        },
+        {
+          "name": "Beyond Blue",
+          "phone": "1300 22 4636",
+          "description": "24/7 support for anxiety and depression"
+        },
+        {
+          "name": "Kids Helpline",
+          "phone": "1800 55 1800",
+          "description": "24/7 support for young people"
+        }
+      ]
+    },
+    "india": {
+      "name": "India",
+      "helplines": [
+        {
+          "name": "National Mental Health Helpline",
+          "phone": "1800-599-0019",
+          "description": "Mental health support and counseling"
+        },
+        {
+          "name": "Women Helpline",
+          "phone": "181",
+          "description": "24/7 support for women in distress"
+        },
+        {
+          "name": "Child Helpline",
+          "phone": "1098",
+          "description": "24/7 support for children in need of care and protection"
+        }
+      ]
+    },
+    "japan": {
+      "name": "Japan",
+      "helplines": [
+        {
+          "name": "TELL Lifeline",
+          "phone": "03-5774-0992",
+          "description": "English-language mental health support"
+        },
+        {
+          "name": "Japan Helpline",
+          "phone": "0570-000-911",
+          "description": "24/7 support in English and Japanese"
+        },
+        {
+          "name": "Tokyo English Life Line",
+          "phone": "03-5774-0992",
+          "description": "English-language support for mental health issues"
+        }
+      ]
+    }
+  }
+}
