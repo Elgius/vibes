@@ -20,32 +20,32 @@ type MoodType = "vibrant" | "romantic" | "sunny" | "mystical" | "serene";
 const features = [
   {
     icon: Heart,
-    title: "Mood-Based Analysis",
+    title: "Mood-Based Vibes",
     description:
-      "Get insights that match your current emotional state, whether you're feeling hopeful, confused, or ready for clarity.",
+      "Switch up the vibe! Pick a mood palette and see the app transform to match your energy.",
   },
   {
     icon: Sparkles,
-    title: "Personalized Guidance",
+    title: "Real Talk, Real Advice",
     description:
-      "Receive tailored advice that understands the unique dynamics of modern relationships.",
+      "Share your situationship and get honest, supportive advice from a caring community.",
   },
   {
     icon: Zap,
     title: "Instant Insights",
     description:
-      "No waiting around - get immediate, thoughtful analysis of your situation.",
+      "No waiting around—get thoughtful, mood-matched feedback right away.",
   },
   {
     icon: Moon,
-    title: "Private & Secure",
-    description: "Your thoughts and feelings are kept completely confidential.",
+    title: "Private & Safe",
+    description: "Your stories and feelings are respected and confidential.",
   },
   {
     icon: Cloud,
-    title: "Emotionally Intelligent",
+    title: "Emotional Intelligence",
     description:
-      "Our analysis considers the full spectrum of human emotions and relationship dynamics.",
+      "We get the full spectrum of human emotions. Every vibe is welcome here!",
   },
 ];
 
@@ -90,6 +90,14 @@ export default function Home() {
       {/* Hero Section */}
       <div className="container mx-auto px-4 py-20">
         <div className="max-w-4xl mx-auto text-center space-y-8">
+          <div className="flex justify-center mb-6">
+            {/* will use this logo later */}
+            {/* <img
+              src="/logo/vibeLogo.png"
+              alt="Vibes Logo"
+              style={{ height: "100px", width: "auto" }}
+            /> */}
+          </div>
           <div className="flex justify-center">
             <Button
               variant="outline"
@@ -102,11 +110,17 @@ export default function Home() {
             </Button>
           </div>
           <h1 className="text-5xl md:text-6xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent">
-            Understand Your Situationship
+            Spill the Vibes
           </h1>
+          <h2
+            className="text-2xl md:text-3xl font-semibold mb-2"
+            style={{ letterSpacing: "0.05em" }}
+          >
+            Understand Your Situationship
+          </h2>
           <p className="text-xl md:text-2xl text-muted-foreground">
-            Get personalized insights about your relationship situation,
-            tailored to your current mood and emotional state.
+            A safe, vibrant space to share your story, get advice, and connect
+            with others. Choose your mood to personalize your experience!
           </p>
           <p className="text-lg text-muted-foreground">
             Choose your mood above to customize your experience and get insights
@@ -178,12 +192,10 @@ export default function Home() {
       {/* CTA Section */}
       <div className="bg-card/50 backdrop-blur-sm py-20">
         <div className="container mx-auto px-4 text-center">
-          <h2 className="text-3xl font-bold mb-6">
-            Ready to Understand Your Situation?
-          </h2>
+          <h2 className="text-3xl font-bold mb-6">Ready to Spill the Vibes?</h2>
           <p className="text-xl text-muted-foreground mb-8">
-            Join thousands of others who've found clarity in their
-            relationships.
+            Join thousands who've found clarity, support, and a place to be real
+            about their relationships.
           </p>
           <div className="flex flex-col items-center gap-4">
             <Button
@@ -191,7 +203,7 @@ export default function Home() {
               onClick={() => router.push("/search")}
               className="group"
             >
-              Start Your Analysis Now
+              Start Your Journey
               <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
             </Button>
             <Button
@@ -210,7 +222,6 @@ export default function Home() {
       <ColorPaletteModal
         open={showPaletteModal}
         onOpenChange={setShowPaletteModal}
-        onSelect={handlePaletteChange}
       />
     </div>
   );
