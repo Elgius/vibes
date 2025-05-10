@@ -10,7 +10,7 @@ export async function POST(request: Request) {
     const body = await request.json();
 
     // Forward the request to the backend service
-    const response = await axios.post("http://localhost:3001/main/mood", body);
+    const response = await axios.post("http://localhost:3000/main/mood", body);
 
     return NextResponse.json(response.data);
   } catch (error) {
