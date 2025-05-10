@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
 import "./globals.css";
 import { ColorPaletteProvider } from "@/context/color-palette-context";
+import { AnalysisProvider } from "@/context/analysis-context";
 
 const poppins = Poppins({
   weight: ["400", "500", "600", "700"],
@@ -37,24 +38,26 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${poppins.variable} font-sans antialiased`}>
         <ColorPaletteProvider>
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              marginTop: "2rem",
-              marginBottom: "2rem",
-            }}
-          >
-            <a href="/">
-              <img
-                src="/logo/vibeLogo.png"
-                alt="Vibes Logo"
-                style={{ height: "80px", width: "auto" }}
-              />
-            </a>
-          </div>
-          {children}
+          <AnalysisProvider>
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                marginTop: "2rem",
+                marginBottom: "2rem",
+              }}
+            >
+              <a href="/">
+                <img
+                  src="/logo/vibeLogo.png"
+                  alt="Vibes Logo"
+                  style={{ height: "80px", width: "auto" }}
+                />
+              </a>
+            </div>
+            {children}
+          </AnalysisProvider>
         </ColorPaletteProvider>
       </body>
     </html>

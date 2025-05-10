@@ -5,6 +5,9 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { useRouter } from "next/navigation";
 import { useColorPalette } from "@/context/color-palette-context";
+import { useAnalysis } from "@/context/analysis-context";
+import { Loader2 } from "lucide-react";
+
 type MoodType = "vibrant" | "romantic" | "sunny" | "mystical" | "serene";
 
 const moodPlaceholders: Record<MoodType, string> = {
@@ -25,6 +28,7 @@ export default function SituationshipForm() {
   const [situation, setSituation] = useState("");
   const router = useRouter();
   const [currentMood, setCurrentMood] = useState<MoodType>("romantic");
+  const { setIsLoading, setAnalysisData, isLoading } = useAnalysis();
 
   useEffect(() => {
     // Get the current mood from localStorage
@@ -34,6 +38,7 @@ export default function SituationshipForm() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsLoading(true);
 
     const situationPayload: { mood: string; message: string } = {
       mood: currentPalette,
@@ -54,19 +59,23 @@ export default function SituationshipForm() {
       }
 
       const data = await response.json();
-      console.log("Response:", data);
+      console.log("Response from API:", data);
 
       if (data.response === "no context") {
         alert(
           "please explain the relationship a bit more so we can give an answer!"
         );
       } else {
+        console.log("Setting analysis data:", data.data);
+        setAnalysisData(data.data);
+        console.log("Navigating to result page");
         router.push("/result");
       }
     } catch (error) {
       console.error("Error sending request:", error);
-      // You might want to show an error message to the user here
       alert("an error occured, please try again or contact support");
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -85,8 +94,15 @@ export default function SituationshipForm() {
         />
       </div>
 
-      <Button type="submit" className="w-full">
-        Analyze My Situation
+      <Button type="submit" className="w-full" disabled={isLoading}>
+        {isLoading ? (
+          <>
+            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+            Analyzing...
+          </>
+        ) : (
+          "Analyze My Situation"
+        )}
       </Button>
     </form>
   );
