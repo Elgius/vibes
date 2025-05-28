@@ -64,7 +64,7 @@ export default function ResultPage() {
     <div className="min-h-screen bg-gradient-to-b from-[var(--gradient-start)] to-[var(--gradient-end)]">
       <div className="container mx-auto px-4 py-12">
         <div className="max-w-4xl mx-auto">
-          <div className="mb-8">
+          <div className="mb-8 flex justify-between">
             <Link href="/search">
               <Button
                 variant="ghost"
@@ -74,6 +74,8 @@ export default function ResultPage() {
                 Back to form
               </Button>
             </Link>
+            {/* implement magic summary later */}
+            <Button variant="ghost">Magic summary 🪄</Button>
           </div>
 
           <div className="text-center mb-12">
@@ -108,6 +110,60 @@ export default function ResultPage() {
               </div>
             ))}
           </div>
+        </div>
+        <div className="flex justify-center items-center">
+          <Button
+            className="mt-12"
+            onClick={async () => {
+              const shareText = `${analysisData.title}\n\n${
+                analysisData.description
+              }\n\n${analysisData.cards
+                .map((card) => `${card.title}\n${card.content}`)
+                .join("\n\n")}`;
+
+              if (navigator.clipboard && window.isSecureContext) {
+                try {
+                  await navigator.clipboard.writeText(shareText);
+                  alert(
+                    "Analysis copied to clipboard! Share it on your favorite social media."
+                  );
+                } catch (err) {
+                  alert("Failed to copy text. Please try again.");
+                  console.error("Failed to copy text: ", err);
+                }
+              } else {
+                // Fallback for older browsers
+                const textArea = document.createElement("textarea");
+                textArea.value = shareText;
+                // Avoid scrolling to bottom
+                textArea.style.position = "fixed";
+                textArea.style.top = "0";
+                textArea.style.left = "0";
+                textArea.style.width = "2em";
+                textArea.style.height = "2em";
+                textArea.style.padding = "0";
+                textArea.style.border = "none";
+                textArea.style.outline = "none";
+                textArea.style.boxShadow = "none";
+                textArea.style.background = "transparent";
+                document.body.appendChild(textArea);
+                textArea.focus();
+                textArea.select();
+                try {
+                  document.execCommand("copy");
+                  alert(
+                    "Analysis copied to clipboard! Share it on your favorite social media."
+                  );
+                } catch (err) {
+                  alert("Failed to copy text. Please try again.");
+                  console.error("Fallback: Oops, unable to copy", err);
+                }
+                document.body.removeChild(textArea);
+              }
+            }}
+          >
+            share your vibe
+          </Button>
         </div>
       </div>
     </div>
