@@ -20,7 +20,7 @@ export const metadata: Metadata = {
       "Spill the vibes! Get advice and support for your situationships.",
     images: [
       {
-        url: "/logo/vibeLogo.png",
+        url: "/logo/svg_format.svg",
         width: 1200,
         height: 630,
         alt: "Vibes Logo",
@@ -50,9 +50,9 @@ export default function RootLayout({
             >
               <a href="/">
                 <img
-                  src="/logo/vibeLogo.png"
+                  src="/logo/svg_format.svg"
                   alt="Vibes Logo"
-                  style={{ height: "80px", width: "auto" }}
+                  style={{ height: "140px", width: "auto" }}
                 />
               </a>
             </div>

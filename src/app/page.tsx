@@ -90,14 +90,6 @@ export default function Home() {
       {/* Hero Section */}
       <div className="container mx-auto px-4 py-20">
         <div className="max-w-4xl mx-auto text-center space-y-8">
-          <div className="flex justify-center mb-6">
-            {/* will use this logo later */}
-            {/* <img
-              src="/logo/vibeLogo.png"
-              alt="Vibes Logo"
-              style={{ height: "100px", width: "auto" }}
-            /> */}
-          </div>
           <div className="flex justify-center">
             <Button
               variant="outline"
@@ -112,12 +104,7 @@ export default function Home() {
           <h1 className="text-5xl md:text-6xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent">
             Spill the Vibes
           </h1>
-          <h2
-            className="text-2xl md:text-3xl font-semibold mb-2"
-            style={{ letterSpacing: "0.05em" }}
-          >
-            Understand Your Situationship
-          </h2>
+
           <p className="text-xl md:text-2xl text-muted-foreground">
             A safe, vibrant space to share your story, get advice, and connect
             with others. Choose your mood to personalize your experience!
