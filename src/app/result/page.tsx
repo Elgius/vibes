@@ -135,7 +135,7 @@ export default function Main() {
           : "bg-[#f5f1e8]"
       }`}
     >
-      <div className="absolute top-0 right-0 flex items-center gap-2 p-4 mr-10">
+      <div className="absolute top-0 right-0 flex items-center gap-2 p-4 mr-5">
         <div className="flex items-center gap-2">
           <Tooltip>
             <TooltipTrigger asChild>
