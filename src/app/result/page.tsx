@@ -284,9 +284,24 @@ export default function Main() {
           {/* Chat Messages */}
           <div className="flex-1 p-8 flex items-center justify-center">
             <div className="max-w-2xl">
-              <div className="bg-white rounded-2xl p-6 shadow-sm border border-[#e5e7eb]">
-                <p className="text-lg text-[#374151] leading-relaxed">
-                  Welcome to vibes, please give me some context via screen shots
+              <div>
+                <p
+                  className={`text-2xl leading-relaxed font-semibold ${
+                    currentPalette === "vibrant"
+                      ? "text-blue-700"
+                      : currentPalette === "romantic"
+                      ? "text-pink-700"
+                      : currentPalette === "sunny"
+                      ? "text-orange-700"
+                      : currentPalette === "mystical"
+                      ? "text-purple-700"
+                      : currentPalette === "serene"
+                      ? "text-teal-700"
+                      : "text-[#374151]"
+                  }`}
+                  style={{ fontFamily: "'TikTok Sans', sans-serif" }}
+                >
+                  Welcome to vibes! please give me some context via screen shots
                   or type what you feel below and i can see how i can help you
                   analyse the situation.
                 </p>
