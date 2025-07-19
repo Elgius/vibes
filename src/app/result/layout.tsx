@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
-import "./globals.css";
-import { ColorPaletteProvider } from "@/context/color-palette-context";
+import "../globals.css";
 
 const poppins = Poppins({
   weight: ["400", "500", "600", "700"],
@@ -28,16 +27,10 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default function ResultLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return (
-    <html lang="en">
-      <body className={`${poppins.variable} font-sans antialiased`}>
-        <ColorPaletteProvider>{children}</ColorPaletteProvider>
-      </body>
-    </html>
-  );
+  return <>{children}</>;
 }
