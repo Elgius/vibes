@@ -102,7 +102,7 @@ export default function ColorPaletteModal({
                   variant="outline"
                   className="flex-1 flex items-center gap-3 p-3 h-auto"
                   onClick={() => {
-                    setCurrentPalette(palette.id as any);
+                    setCurrentPalette(palette.id as "vibrant" | "romantic" | "sunny" | "mystical" | "serene");
                     onOpenChange(false);
                   }}
                 >

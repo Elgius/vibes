@@ -3,7 +3,6 @@
 import { useState, useEffect } from "react";
 import { useColorPalette } from "@/context/color-palette-context";
 import { Card } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import { Phone, Mail, AlertTriangle, Globe } from "lucide-react";
 import helplineData from "@/data/helpline-numbers.json";
 
