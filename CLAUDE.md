@@ -41,12 +41,12 @@ This is a Next.js 15 application called "Spill the Vibes" - a mood-based platfor
    - `/example/[mood]` - Dynamic mood example pages
 
 3. **API Integration**
-   - Self-contained using Next.js API routes with Anthropic AI SDK
+   - Self-contained using Next.js API routes with OpenAI SDK
    - Key endpoints:
-     - `/api/chat` - Streaming chat responses with mood-based conversations
-     - `/api/analyze` - Relationship situation analysis using Claude 3 Haiku
+     - `/api/chat` - Streaming chat responses with mood-based conversations using GPT-4o-mini
+     - `/api/analyze` - Relationship situation analysis
    - Stripe integration for payments (`/api/checkout_sessions`)
-   - All AI prompts stored in `prompts.ts` at project root
+   - Mood-specific system prompts embedded in API routes
 
 4. **Component Architecture**
    - UI components built with Radix UI primitives (src/components/ui/)
@@ -68,10 +68,11 @@ This is a Next.js 15 application called "Spill the Vibes" - a mood-based platfor
    - Utility-first approach with component variants
 
 7. **AI Integration**
-   - Uses Anthropic AI SDK (`@ai-sdk/anthropic`) with Claude 3 Haiku model
+   - Currently uses OpenAI SDK (`@ai-sdk/openai`) with GPT-4o-mini model
    - Implements streaming responses using `streamText` from `ai` package
-   - Context validation using `litmus_agent_prompt` before analysis
-   - Mood-specific prompts for personalized responses
+   - Five mood-based AI personalities: vibrant, romantic, sunny, mystical, serene
+   - Temperature set to 0.7 for balanced creativity and consistency
+   - **Future Migration**: Planning to transition to Anthropic/Claude architecture in future development phases
 
 ## Development Roadmap (from todo.md)
 1. Magic Summary Feature - Intelligent content summarization
@@ -83,6 +84,7 @@ This is a Next.js 15 application called "Spill the Vibes" - a mood-based platfor
 - Uses TypeScript with strict mode enabled
 - Path alias `@/` maps to `./src/`
 - TikTok Sans font integration for branding
-- Anthropic API key stored in `.env.local` as `ANTHROPIC_API_KEY`
+- OpenAI API key stored in `.env.local` as `OPENAI_API_KEY`
 - No backend dependency - fully self-contained Next.js app
 - No test framework currently configured
+- **Migration Note**: Currently using OpenAI models; future versions will migrate to Anthropic/Claude for enhanced AI capabilities

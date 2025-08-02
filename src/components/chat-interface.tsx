@@ -2,7 +2,7 @@
 
 import { useChat } from "@ai-sdk/react";
 import { DefaultChatTransport } from "ai";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { useColorPalette } from "@/context/color-palette-context";
 import ChatInput from "./chat-input";
 
@@ -20,47 +20,76 @@ export default function ChatInterface({ fileContext }: ChatInterfaceProps) {
   const { currentPalette } = useColorPalette();
   const [input, setInput] = useState('');
 
-  const { messages, sendMessage, status, setMessages, error, reload } = useChat({
-    transport: new DefaultChatTransport({
-      api: '/api/chat',
-    }),
-    initialMessages: [
+  // Get mood-specific welcome message
+  const moodWelcomes: Record<string, string> = {
+    vibrant: "Hey there! ⚡ I'm Vibes, your energetic AI companion! I'm here to help you channel that amazing energy and tackle whatever's on your mind. Ready to dive in?",
+    romantic: "Hello lovely 💕 I'm Vibes, your warm and understanding AI companion. I'm here to explore the beautiful complexities of your heart and relationships. What's stirring in your soul?",
+    sunny: "Hi sunshine! ☀️ I'm Vibes, your optimistic AI companion! I'm here to help you see the bright side and spread those positive vibes. What's bringing joy to your day?",
+    mystical: "Greetings, dear soul ✨ I'm Vibes, your intuitive AI companion. I'm here to help you explore the deeper mysteries and hidden meanings in your journey. What wisdom are you seeking?",
+    serene: "Hello 🌸 I'm Vibes, your peaceful AI companion. I'm here to provide calm guidance and gentle understanding as we explore your thoughts together. How can I bring you clarity today?"
+  };
+
+  const welcomeMessage = moodWelcomes[currentPalette] || moodWelcomes.serene;
+
+  // Memoize transport to prevent recreation on every render
+  const transport = useMemo(() => new DefaultChatTransport({
+    api: '/api/chat',
+    body: {
+      mood: currentPalette,
+    }
+  }), [currentPalette]);
+
+  const { messages, status, setMessages, error, reload, sendMessage } = useChat({
+    transport,
+    id: useMemo(() => 'chat-' + Date.now(), []), // Only create ID once
+    messages: [
       {
         id: 'welcome',
         role: 'assistant',
         parts: [
           {
             type: 'text',
-            text: "Hey there, great to meet you. I'm Vibes, your personal AI companion. My goal is to be useful, friendly and fun. Ask me for advice, for answers, or let's talk about whatever's on your mind. How's your day going?"
+            text: welcomeMessage
           }
         ]
       }
     ],
   });
 
-  // Update welcome message when mood changes
-  useEffect(() => {
-    const moodWelcomes: Record<string, string> = {
-      vibrant: "Hey there! ⚡ I'm Vibes, your energetic AI companion! I'm here to help you channel that amazing energy and tackle whatever's on your mind. Ready to dive in?",
-      romantic: "Hello lovely 💕 I'm Vibes, your warm and understanding AI companion. I'm here to explore the beautiful complexities of your heart and relationships. What's stirring in your soul?",
-      sunny: "Hi sunshine! ☀️ I'm Vibes, your optimistic AI companion! I'm here to help you see the bright side and spread those positive vibes. What's bringing joy to your day?",
-      mystical: "Greetings, dear soul ✨ I'm Vibes, your intuitive AI companion. I'm here to help you explore the deeper mysteries and hidden meanings in your journey. What wisdom are you seeking?",
-      serene: "Hello 🌸 I'm Vibes, your peaceful AI companion. I'm here to provide calm guidance and gentle understanding as we explore your thoughts together. How can I bring you clarity today?"
-    };
-
-    if (messages.length === 1 && messages[0].id === 'welcome') {
-      setMessages([{
-        id: 'welcome',
-        role: 'assistant',
-        parts: [
-          {
-            type: 'text',
-            text: moodWelcomes[currentPalette] || moodWelcomes.serene
-          }
-        ]
-      }]);
+  // Custom submit handler that works with files
+  const handleCustomSubmit = async (messageText: string, attachments?: any[]) => {
+    // Create message parts
+    const parts: any[] = [];
+    
+    // Add text part if present
+    if (messageText && messageText.trim()) {
+      parts.push({
+        type: 'text',
+        text: messageText
+      });
     }
-  }, [currentPalette, messages, setMessages]);
+    
+    // Add image parts if present
+    if (attachments && attachments.length > 0) {
+      for (const attachment of attachments) {
+        parts.push({
+          type: 'image',
+          image: attachment.url
+        });
+      }
+    }
+    
+    // Send message with parts
+    await sendMessage({
+      role: 'user',
+      parts: parts
+    }, {
+      body: {
+        mood: currentPalette,
+      }
+    });
+  };
+
 
   return (
     <div className="flex-1 flex flex-col">
@@ -82,19 +111,21 @@ export default function ChatInterface({ fileContext }: ChatInterfaceProps) {
                 }`}
               >
                 <div className="text-base leading-relaxed whitespace-pre-wrap">
-                  {message.parts.map((part, index) => {
+                  {/* Render message parts */}
+                  {message.parts && message.parts.map((part: any, index: number) => {
                     if (part.type === 'text') {
                       return <span key={index}>{part.text}</span>;
                     }
                     
-                    if (part.type === 'file' && part.mediaType?.startsWith('image/')) {
+                    if (part.type === 'image') {
                       return (
-                        <img
-                          key={index}
-                          src={part.url}
-                          alt={part.filename || 'Attached image'}
-                          className="max-w-full h-auto rounded-lg mt-2"
-                        />
+                        <div key={index} className="mt-2">
+                          <img
+                            src={part.image}
+                            alt="Attached image"
+                            className="max-w-full h-auto rounded-lg"
+                          />
+                        </div>
                       );
                     }
                     
@@ -142,7 +173,7 @@ export default function ChatInterface({ fileContext }: ChatInterfaceProps) {
       <ChatInput
         input={input}
         setInput={setInput}
-        sendMessage={sendMessage}
+        sendMessage={handleCustomSubmit}
         status={status}
         currentPalette={currentPalette}
         fileContext={fileContext}

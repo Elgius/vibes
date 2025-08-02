@@ -15,7 +15,7 @@ interface FileContext {
 interface ChatInputProps {
   input: string;
   setInput: (value: string) => void;
-  sendMessage: (message: { text: string; files?: FileList }) => void;
+  sendMessage: (messageText: string, attachments?: any[]) => void;
   status: 'ready' | 'streaming' | 'submitted' | 'error';
   currentPalette: string;
   fileContext: FileContext[];
@@ -53,24 +53,52 @@ export default function ChatInput({
     }
   };
   
-  const onSubmit = useCallback((e: React.FormEvent<HTMLFormElement>) => {
+  const onSubmit = useCallback(async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     e.stopPropagation();
     
-    // Only submit if there's actual input content
-    if (input && input.trim()) {
-      sendMessage({ 
-        text: input,
-        files
-      }, {
-        body: {
-          mood: currentPalette,
+    // Only submit if there's actual input content or files
+    if ((input && input.trim()) || (files && files.length > 0)) {
+      try {
+        // Create FormData for file uploads
+        const formData = new FormData();
+        
+        // Always include the text message (even if empty)
+        const messageText = input || (files && files.length > 0 ? "Please analyze this image" : "");
+        
+        // Convert files to base64 data URLs for sending
+        const attachments: any[] = [];
+        if (files && files.length > 0) {
+          for (const file of Array.from(files)) {
+            if (file.type.startsWith('image/')) {
+              const dataURL = await new Promise<string>((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = () => resolve(reader.result as string);
+                reader.onerror = reject;
+                reader.readAsDataURL(file);
+              });
+              
+              attachments.push({
+                contentType: file.type,
+                name: file.name,
+                url: dataURL
+              });
+            }
+          }
         }
-      });
-      setInput('');
-      clearFiles();
+
+        // Send message using the new signature
+        await sendMessage(messageText, attachments.length > 0 ? attachments : undefined);
+        
+        // Clear input and files only after successful submission
+        setInput('');
+        clearFiles();
+      } catch (error) {
+        console.error('Failed to send message:', error);
+        // Don't clear files if submission failed
+      }
     }
-  }, [input, sendMessage, files, currentPalette, setInput]);
+  }, [input, sendMessage, files, setInput]);
 
   return (
     <div className="p-4 lg:p-8 pt-0">
@@ -152,7 +180,7 @@ export default function ChatInput({
             <Button
               type="submit"
               size="icon"
-              disabled={status !== 'ready' || !input?.trim()}
+              disabled={status !== 'ready' || (!input?.trim() && (!files || files.length === 0))}
               className="absolute right-1 lg:right-2 top-1/2 transform -translate-y-1/2 w-8 h-8 lg:w-10 lg:h-10 bg-primary hover:bg-primary/80 text-primary-foreground rounded-full disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <ArrowUp className="w-4 h-4 lg:w-5 lg:h-5" />

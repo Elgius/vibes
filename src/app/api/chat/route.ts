@@ -5,12 +5,15 @@ import { streamText, convertToModelMessages, UIMessage } from "ai";
 // Allow streaming responses up to 30 seconds
 export const maxDuration = 30;
 
+
 export async function POST(request: NextRequest) {
   try {
+    const body = await request.json();
+    
     const {
       messages,
       mood = "serene",
-    }: { messages: UIMessage[]; mood?: string } = await request.json();
+    }: { messages: UIMessage[]; mood?: string } = body;
 
     // Mood-specific system prompts
     const moodPrompts: Record<string, string> = {
@@ -28,10 +31,44 @@ export async function POST(request: NextRequest) {
 
     const systemPrompt = moodPrompts[mood] || moodPrompts.serene;
 
+    // Process messages to convert parts to content format for OpenAI
+    const processedMessages = messages.map((message: any) => {
+      // Skip system messages
+      if (message.role === 'system') {
+        return message;
+      }
+      
+      // Check if message has parts (AI SDK 5.0 format)
+      if (message.parts && Array.isArray(message.parts)) {
+        const content: any[] = [];
+        
+        message.parts.forEach((part: any) => {
+          if (part.type === 'text') {
+            content.push({
+              type: 'text',
+              text: part.text
+            });
+          } else if (part.type === 'image') {
+            content.push({
+              type: 'image',
+              image: part.image
+            });
+          }
+        });
+        
+        return {
+          ...message,
+          content: content.length > 0 ? content : ''
+        };
+      }
+      
+      return message;
+    });
+
     const result = await streamText({
       model: openai("gpt-4o-mini"),
       system: systemPrompt,
-      messages: convertToModelMessages(messages),
+      messages: convertToModelMessages(processedMessages),
       temperature: 0.7,
     });
 
