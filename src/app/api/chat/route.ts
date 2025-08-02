@@ -1,79 +1,48 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest } from "next/server";
+import { anthropic } from '@ai-sdk/anthropic';
+import { streamText } from 'ai';
 
 export async function POST(request: NextRequest) {
   try {
-    const { messages, mood } = await request.json();
+    const { messages, mood = 'serene', fileContext } = await request.json();
 
-    // Create a readable stream for the response
-    const stream = new ReadableStream({
-      async start(controller) {
-        // Boilerplate streaming data based on mood
-        const boilerplateResponses: Record<string, string[]> = {
-          vibrant: [
-            "Hey there! I can feel your energy! ",
-            "You're radiating such vibrant vibes right now. ",
-            "Let's channel this dynamic energy into understanding your situation better. ",
-            "What's got you feeling so energized today?"
-          ],
-          romantic: [
-            "I sense there's something special on your heart. ",
-            "Love and connection are such beautiful, complex feelings. ",
-            "Let's explore these romantic emotions together. ",
-            "Tell me more about what's stirring in your heart."
-          ],
-          sunny: [
-            "Your optimism is shining through! ",
-            "There's something wonderfully bright about your energy today. ",
-            "Let's look at the sunny side of your situation together. ",
-            "What's bringing this positive glow to your day?"
-          ],
-          mystical: [
-            "I feel there are deeper layers to explore here. ",
-            "Sometimes the universe speaks in mysterious ways. ",
-            "Let's unravel the hidden meanings together. ",
-            "What mysteries are you hoping to understand?"
-          ],
-          serene: [
-            "I appreciate the calm energy you're bringing. ",
-            "There's a peaceful clarity in your approach. ",
-            "Let's explore your thoughts with gentle understanding. ",
-            "What's helping you maintain this centered feeling?"
-          ],
-        };
+    // Mood-specific system prompts
+    const moodPrompts: Record<string, string> = {
+      vibrant: "You are Vibes, an energetic and empowering AI companion. Provide dynamic, confident responses that inspire action and highlight possibilities. Use an upbeat, motivational tone while being genuinely helpful.",
+      romantic: "You are Vibes, a warm and emotionally attuned AI companion. Offer heartfelt, tender responses that explore emotional depth and romantic connections. Use a gentle, understanding tone that validates feelings.",
+      sunny: "You are Vibes, an optimistic and uplifting AI companion. Focus on positive aspects while maintaining realistic expectations. Use a bright, cheerful tone that brings hope and light to conversations.",
+      mystical: "You are Vibes, a thoughtful and introspective AI companion. Provide deep, meaningful responses that explore hidden layers and deeper meanings. Use a wise, contemplative tone that encourages reflection.",
+      serene: "You are Vibes, a calm and balanced AI companion. Offer peaceful, centered responses that provide clarity and gentle understanding. Use a soothing, mindful tone that promotes tranquility."
+    };
 
-        const responses = boilerplateResponses[mood] || [
-          "I'm here to listen and understand. ",
-          "Your feelings are valid and important. ",
-          "Let's explore this together. ",
-          "Tell me more about what you're experiencing."
-        ];
+    const systemPrompt = moodPrompts[mood] || moodPrompts.serene;
+    
+    // Add file context if provided
+    let contextualSystemPrompt = systemPrompt;
+    if (fileContext && fileContext.length > 0) {
+      contextualSystemPrompt += "\n\nThe user has shared the following files for context:\n" + 
+        fileContext.map((file: any, index: number) => 
+          `File ${index + 1}: ${file.name} (${file.type})\n${file.content || 'File content not available for preview'}`
+        ).join('\n\n');
+    }
 
-        // Simulate streaming by sending each sentence with a delay
-        for (const sentence of responses) {
-          const encoder = new TextEncoder();
-          controller.enqueue(encoder.encode(sentence));
-          
-          // Simulate network delay
-          await new Promise(resolve => setTimeout(resolve, 500));
-        }
-
-        // Close the stream
-        controller.close();
-      },
+    const result = await streamText({
+      model: anthropic('claude-3-haiku-20240307'),
+      system: contextualSystemPrompt,
+      messages: messages,
+      temperature: 0.7,
+      maxTokens: 1000,
     });
 
-    // Return the stream as the response
-    return new NextResponse(stream, {
-      headers: {
-        "Content-Type": "text/plain; charset=utf-8",
-        "Transfer-Encoding": "chunked",
-      },
-    });
+    return result.toTextStreamResponse();
   } catch (error) {
     console.error("Error in chat route:", error);
-    return NextResponse.json(
-      { error: "Failed to process chat request" },
-      { status: 500 }
+    return new Response(
+      JSON.stringify({ error: "Failed to process chat request" }),
+      { 
+        status: 500,
+        headers: { "Content-Type": "application/json" }
+      }
     );
   }
 }
