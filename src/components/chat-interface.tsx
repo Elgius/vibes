@@ -58,6 +58,12 @@ export default function ChatInterface({ fileContext }: ChatInterfaceProps) {
 
   // Custom submit handler that works with files
   const handleCustomSubmit = async (messageText: string, attachments?: any[]) => {
+    console.log('[ChatInterface] handleCustomSubmit called with:', {
+      messageText,
+      attachmentsCount: attachments?.length || 0,
+      attachments
+    });
+    
     // Create message parts
     const parts: any[] = [];
     
@@ -72,12 +78,23 @@ export default function ChatInterface({ fileContext }: ChatInterfaceProps) {
     // Add image parts if present
     if (attachments && attachments.length > 0) {
       for (const attachment of attachments) {
+        console.log('[ChatInterface] Adding image part:', {
+          name: attachment.name,
+          contentType: attachment.contentType,
+          urlLength: attachment.url?.length
+        });
         parts.push({
           type: 'image',
           image: attachment.url
         });
       }
     }
+    
+    console.log('[ChatInterface] Sending message with parts:', {
+      role: 'user',
+      partsCount: parts.length,
+      parts: parts.map(p => ({ type: p.type, ...(p.type === 'image' ? { imageLength: p.image?.length } : { text: p.text }) }))
+    });
     
     // Send message with parts
     await sendMessage({

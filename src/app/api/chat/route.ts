@@ -9,11 +9,15 @@ export const maxDuration = 30;
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
+    console.log('[API Route] Received request body:', JSON.stringify(body, null, 2));
     
     const {
       messages,
       mood = "serene",
     }: { messages: UIMessage[]; mood?: string } = body;
+    
+    console.log('[API Route] Messages count:', messages.length);
+    console.log('[API Route] Last message:', JSON.stringify(messages[messages.length - 1], null, 2));
 
     // Mood-specific system prompts
     const moodPrompts: Record<string, string> = {
@@ -31,24 +35,32 @@ export async function POST(request: NextRequest) {
 
     const systemPrompt = moodPrompts[mood] || moodPrompts.serene;
 
-    // Process messages to convert parts to content format for OpenAI
-    const processedMessages = messages.map((message: any) => {
-      // Skip system messages
-      if (message.role === 'system') {
-        return message;
-      }
+    // Process messages for AI SDK format
+    const processedMessages = messages.map((message: any, index: number) => {
+      console.log(`[API Route] Processing message ${index}:`, {
+        role: message.role,
+        hasParts: !!message.parts,
+        partsCount: message.parts?.length
+      });
       
       // Check if message has parts (AI SDK 5.0 format)
       if (message.parts && Array.isArray(message.parts)) {
+        // Convert parts to AI SDK expected content format
         const content: any[] = [];
         
-        message.parts.forEach((part: any) => {
+        message.parts.forEach((part: any, partIndex: number) => {
+          console.log(`[API Route] Processing part ${partIndex}:`, {
+            type: part.type,
+            ...(part.type === 'image' ? { imageLength: part.image?.length } : { text: part.text })
+          });
+          
           if (part.type === 'text') {
             content.push({
               type: 'text',
               text: part.text
             });
-          } else if (part.type === 'image') {
+          } else if (part.type === 'image' && part.image) {
+            // Convert base64 data URL to format expected by AI SDK
             content.push({
               type: 'image',
               image: part.image
@@ -56,19 +68,28 @@ export async function POST(request: NextRequest) {
           }
         });
         
+        console.log(`[API Route] Message ${index} processed content:`, {
+          contentLength: content.length,
+          contentTypes: content.map(c => c.type)
+        });
+        
         return {
           ...message,
-          content: content.length > 0 ? content : ''
+          content: content
         };
       }
       
+      // For messages without parts, keep as is
       return message;
     });
+    
+    console.log('[API Route] All messages processed, converting to model messages');
+    console.log('[API Route] Processed messages:', JSON.stringify(processedMessages, null, 2));
 
     const result = await streamText({
       model: openai("gpt-4o-mini"),
       system: systemPrompt,
-      messages: convertToModelMessages(processedMessages),
+      messages: processedMessages,
       temperature: 0.7,
     });
 

@@ -69,11 +69,17 @@ export default function ChatInput({
         // Convert files to base64 data URLs for sending
         const attachments: any[] = [];
         if (files && files.length > 0) {
+          console.log('[ChatInput] Processing files:', files.length);
           for (const file of Array.from(files)) {
             if (file.type.startsWith('image/')) {
+              console.log('[ChatInput] Converting image to base64:', file.name, file.type);
               const dataURL = await new Promise<string>((resolve, reject) => {
                 const reader = new FileReader();
-                reader.onload = () => resolve(reader.result as string);
+                reader.onload = () => {
+                  const result = reader.result as string;
+                  console.log('[ChatInput] Base64 conversion complete, length:', result.length);
+                  resolve(result);
+                };
                 reader.onerror = reject;
                 reader.readAsDataURL(file);
               });
@@ -85,9 +91,15 @@ export default function ChatInput({
               });
             }
           }
+          console.log('[ChatInput] Attachments prepared:', attachments.length);
         }
 
         // Send message using the new signature
+        console.log('[ChatInput] Sending message with attachments:', {
+          messageText,
+          attachmentsCount: attachments.length,
+          hasAttachments: attachments.length > 0
+        });
         await sendMessage(messageText, attachments.length > 0 ? attachments : undefined);
         
         // Clear input and files only after successful submission
