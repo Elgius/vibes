@@ -140,7 +140,7 @@ export default function ChatInterface({ fileContext }: ChatInterfaceProps) {
                           <img
                             src={part.image}
                             alt="Attached image"
-                            className="max-w-full h-auto rounded-lg"
+                            className="max-w-[50%] h-auto rounded-lg"
                           />
                         </div>
                       );
