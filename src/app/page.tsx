@@ -129,7 +129,7 @@ export default function Home() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button
               size="lg"
-              onClick={() => router.push("/search")}
+              onClick={() => router.push("/onboarding")}
               className="group"
             >
               Start Your Analysis
@@ -138,7 +138,7 @@ export default function Home() {
             <Button
               variant="outline"
               size="lg"
-              onClick={() => router.push("/search")}
+              onClick={() => router.push("/onboarding")}
             >
               How It Works
             </Button>
@@ -200,7 +200,7 @@ export default function Home() {
           <div className="flex flex-col items-center gap-4">
             <Button
               size="lg"
-              onClick={() => router.push("/search")}
+              onClick={() => router.push("/onboarding")}
               className="group"
             >
               Start Your Journey

@@ -8,11 +8,22 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { ArrowUp } from "lucide-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export default function Component() {
+  const router = useRouter();
   const [agreed, setAgreed] = useState(false);
   const [ageGroup, setAgeGroup] = useState("");
   const [firstName, setFirstName] = useState("");
+
+  const handleSubmit = () => {
+    if (agreed && ageGroup && firstName) {
+      // Store user data in localStorage
+      localStorage.setItem("userName", firstName);
+      localStorage.setItem("userAge", ageGroup);
+      router.push("/user");
+    }
+  };
 
   return (
     <div className="min-h-screen bg-[#f5f1e8] flex items-center justify-center p-4">
@@ -34,7 +45,7 @@ export default function Component() {
             <p className="text-lg">
               We take data privacy seriously, as described in our{" "}
               <Link
-                href="#"
+                href="/privacy"
                 className="text-[#059669] underline hover:no-underline"
               >
                 Privacy Policy
@@ -49,7 +60,7 @@ export default function Component() {
               privacy very seriously, You can learn more about our service in
               our{" "}
               <Link
-                href="#"
+                href="/terms"
                 className="text-[#059669] underline hover:no-underline"
               >
                 Terms of Service
@@ -122,13 +133,20 @@ export default function Component() {
             placeholder="Your first name"
             value={firstName}
             onChange={(e) => setFirstName(e.target.value)}
+            onKeyPress={(e) => {
+              if (e.key === "Enter") {
+                handleSubmit();
+              }
+            }}
             className="w-full h-16 px-6 text-lg bg-white border-2 border-[#e5e7eb] rounded-full placeholder:text-[#9ca3af] focus:border-[#059669] focus:ring-0"
           />
-          <div className="absolute right-4 top-1/2 transform -translate-y-1/2">
-            <div className="w-8 h-8 bg-[#e5e7eb] rounded-full flex items-center justify-center">
-              <ArrowUp className="w-4 h-4 text-[#6b7280]" />
-            </div>
-          </div>
+          <Button
+            onClick={handleSubmit}
+            disabled={!agreed || !ageGroup || !firstName}
+            className="absolute right-2 top-1/2 transform -translate-y-1/2 w-12 h-12 bg-[#059669] hover:bg-[#047857] disabled:bg-[#e5e7eb] disabled:cursor-not-allowed rounded-full flex items-center justify-center transition-colors"
+          >
+            <ArrowUp className="w-5 h-5 text-white" />
+          </Button>
         </div>
 
         {/* Login Section */}

@@ -189,10 +189,10 @@ export default function Contexts() {
                     className={`relative z-10 block px-6 py-3 rounded-xl ${buttonColors.innerBg}`}
                   >
                     <div className="relative z-10 flex items-center space-x-2">
+                      <Sparkles className="w-4 h-4 transition-transform duration-500 group-hover:translate-x-1 flex-shrink-0" />
                       <span className="transition-all duration-500 group-hover:translate-x-1 text-sm">
                         {question}
                       </span>
-                      <Sparkles className="w-4 h-4 transition-transform duration-500 group-hover:translate-x-1 flex-shrink-0" />
                     </div>
                   </span>
                 </button>
