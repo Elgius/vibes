@@ -35,7 +35,7 @@ This is a Next.js 15 application called "Spill the Vibes" - a mood-based platfor
 2. **Page Structure & Navigation Flow**
    - `/` - Landing page with mood selector → navigates to `/onboarding`
    - `/onboarding` - User onboarding (terms, age verification, name) → navigates to `/user`
-   - `/user` - Main chat interface with streaming AI responses
+   - `/user` - Main chat interface with streaming AI responses and image upload support
    - `/search` - Analysis form with mood-specific content
    - `/result` - Analysis results page (with custom layout)
    - `/example/[mood]` - Dynamic mood example pages
@@ -44,6 +44,9 @@ This is a Next.js 15 application called "Spill the Vibes" - a mood-based platfor
    - Self-contained using Next.js API routes with OpenAI SDK
    - Key endpoints:
      - `/api/chat` - Streaming chat responses with mood-based conversations using GPT-4o-mini
+       - Supports multimodal input (text + images)
+       - Images processed via base64 data URLs
+       - AI SDK v5.0 transport-based architecture
      - `/api/analyze` - Relationship situation analysis
    - Stripe integration for payments (`/api/checkout_sessions`)
    - Mood-specific system prompts embedded in API routes
@@ -52,6 +55,8 @@ This is a Next.js 15 application called "Spill the Vibes" - a mood-based platfor
    - UI components built with Radix UI primitives (src/components/ui/)
    - Styled with Tailwind CSS v4 and custom CSS variables
    - Key components:
+     - `ChatInterface` - Main chat interface with message display and image support
+     - `ChatInput` - Message input with file upload and drag-and-drop for images
      - `SituationshipForm` - Main user input form
      - `Contexts` - Image upload and question interface
      - `ColorPaletteModal` - Mood selection interface
@@ -70,8 +75,11 @@ This is a Next.js 15 application called "Spill the Vibes" - a mood-based platfor
 7. **AI Integration**
    - Currently uses OpenAI SDK (`@ai-sdk/openai`) with GPT-4o-mini model
    - Implements streaming responses using `streamText` from `ai` package
+   - AI SDK v5.0 with transport-based architecture (`DefaultChatTransport`)
+   - Supports multimodal conversations with image analysis capabilities
    - Five mood-based AI personalities: vibrant, romantic, sunny, mystical, serene
    - Temperature set to 0.7 for balanced creativity and consistency
+   - Image processing: converts uploaded images to base64 data URLs for AI analysis
    - **Future Migration**: Planning to transition to Anthropic/Claude architecture in future development phases
 
 ## Development Roadmap (from todo.md)
